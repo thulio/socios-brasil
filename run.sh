@@ -21,5 +21,5 @@ MAX_DOWNLOADS=$((TOTAL_FILES / 2))
 
 aria2c  --auto-file-renaming=false -j $MAX_DOWNLOADS -c -s $CONNECTIONS -x $CONNECTIONS --dir=data/download -i urls.txt
 
-time python extract_dump.py data/output/ data/download/DADOS_ABERTOS_CNPJ*.zip
+time python extract_dump.py --no_censorship data/output/ data/download/DADOS_ABERTOS_CNPJ*.zip
 time python extract_partner_companies.py data/output/socio.csv.gz data/output/empresa-socia.csv.gz
