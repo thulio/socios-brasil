@@ -16,3 +16,6 @@ download.sh
 data/*
 reg_settings.py
 urls.txt
+.mypy_cache
+.venv
+.pytest_cache
