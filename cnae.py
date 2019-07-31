@@ -110,20 +110,31 @@ class CNAESpider(scrapy.Spider):
             item_id = get_text(tree.xpath(xpath_id))
             item_description = get_text(tree.xpath(xpath_description))
             item_data = {}
-            if item_name == "subclasse" or len(item_id) == self.parsers[item_name]["id_length"]:
+            if (
+                item_name == "subclasse"
+                or len(item_id) == self.parsers[item_name]["id_length"]
+            ):
                 next_root_name = item_name
             else:
-                descricao = response.xpath("//span[@class = 'destaque']//text()").extract()[0]
+                descricao = response.xpath(
+                    "//span[@class = 'destaque']//text()"
+                ).extract()[0]
                 item_data[f"id_{item_name}"] = descricao.split()[0]
                 item_data[f"descricao_{item_name}"] = descricao
                 next_root_name = self.parsers[item_name]["next"]
-            item_data.update({
-                f"id_{next_root_name}": item_id.strip(),
-                f"descricao_{next_root_name}": item_description.strip(),
-            })
+            item_data.update(
+                {
+                    f"id_{next_root_name}": item_id.strip(),
+                    f"descricao_{next_root_name}": item_description.strip(),
+                }
+            )
             item_data.update(data)
 
-            callback = self.parse_items if next_root_name != "subclasse" else self.parse_subclasse
+            callback = (
+                self.parse_items
+                if next_root_name != "subclasse"
+                else self.parse_subclasse
+            )
             yield scrapy.Request(
                 url=url,
                 meta={"data": item_data, "root_name": next_root_name},

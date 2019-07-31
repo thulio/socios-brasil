@@ -22,7 +22,6 @@ from rows.plugins.utils import ipartition
 from rows.utils import CsvLazyDictWriter, open_compressed
 from tqdm import tqdm
 
-
 # Fields to delete/clean in some cases so we don't expose personal information
 FIELDS_TO_DELETE = {
     "1": ("codigo_pais", "correio_eletronico", "nome_pais"),  # Company
@@ -244,7 +243,6 @@ def parse_row(header, line):
                 raise ParsingError(line=line, error="Wrong filler")
             continue  # Do not save `filler`
         elif field_name == "tipo_de_registro":
-            row_type = value
             continue  # Do not save row type (will be saved in separate files)
         elif field_name == "fim":
             if value.strip() != "F":
@@ -337,7 +335,6 @@ def main():
     args = parser.parse_args()
 
     input_encoding = "latin1"
-    output_encoding = "utf-8"
     input_filenames = args.input_filenames
     output_path = Path(args.output_path)
     if not output_path.exists():
